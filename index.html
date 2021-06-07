@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <div class="container">
+        <p id="timer">00:00:00</p>
+        <div>
+            <button id="start_stop" class="btn btn-lg btn-primary">START</button>
+        </div>
+    </div>
+
+    <script>
+        let start;
+        let timer_id;
+
+        document.getElementById('start_stop').addEventListener('click', function(){
+            if (this.innerHTML === 'START'){
+
+                start = new Date();
+                timer_id = setInterval(goTimer,10);
+                
+                //ストップボタンにする
+                this.innerHTML = 'STOP';
+                this.classList.remove('btn-primary');
+                this.classList.add('btn-danger');
+            } else {
+                //スタートボタンに戻す
+                clearInterval(timer_id);
+                this.innerHTML = 'START';
+                this.classList.remove('btn-danger');
+                this.classList.add('btn-primary');
+            }
+        });
+
+        let addZero = (value) => {
+            if(value < 10){
+                value = '0' + value;
+            }
+            return value;
+        };
+        
+        let goTimer = () => {
+            let now = new Date();
+
+            let milli = now.getTime() - start.getTime();
+            let seconds = Math.floor(milli / 1000);
+
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+            
+            seconds = seconds - minutes * 60;
+            minutes = minutes - hours * 60;
+
+            document.getElementById('timer').innerHTML = addZero(hours) + ':' + addZero(minutes) + ':' + addZero(seconds);
+        };
+        
+    </script>
+</body>
+</html>
